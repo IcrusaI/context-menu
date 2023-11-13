@@ -1,7 +1,7 @@
-import ElementType from "./ElementType";
+import ElementType from './ElementType';
 
 export default interface ContextMenuData {
-    type: ElementType,
-    name?: string,
-    text?: string,
+  type: ElementType;
+  name?: string;
+  text?: string;
 }

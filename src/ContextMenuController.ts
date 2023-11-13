@@ -1,10 +1,9 @@
-import Point2D from "./Point2D";
-import ContextMenuEventData from "./ContextMenuEventData";
-import ContextMenuData from "./ContextMenuData";
-import EventType from "./EventType";
+import Point2D from './Point2D';
+import ContextMenuEventData from './ContextMenuEventData';
+import ContextMenuData from './ContextMenuData';
+import EventType from './EventType';
 
 export default class ContextMenuController {
-
   private listeners: ContextMenuEventData[] = [];
   private stylesheet: CSSStyleSheet;
 
@@ -13,14 +12,14 @@ export default class ContextMenuController {
   private cursorScreenPage: Point2D;
 
   constructor() {
-    this.cursorPage = {x: 0, y: 0};
-    this.cursorScreenPage = {x: 0, y: 0};
+    this.cursorPage = { x: 0, y: 0 };
+    this.cursorScreenPage = { x: 0, y: 0 };
 
     document.addEventListener('mousemove', this.watchMouseMove.bind(this));
     document.addEventListener('mousedown', this.watchMouseDown.bind(this));
 
-    const styleEl: HTMLStyleElement = document.createElement("style");
-    styleEl.appendChild(document.createTextNode(""));
+    const styleEl: HTMLStyleElement = document.createElement('style');
+    styleEl.appendChild(document.createTextNode(''));
     document.head.appendChild(styleEl);
     this.stylesheet = styleEl.sheet as CSSStyleSheet;
 
@@ -28,7 +27,8 @@ export default class ContextMenuController {
   }
 
   private initDefaultCss() {
-    this.css(".context-menu",
+    this.css(
+      '.context-menu',
       `
       position: absolute;
       display: initial;
@@ -39,23 +39,30 @@ export default class ContextMenuController {
       border-radius: 5px;
       background-color: white;
       box-shadow: 0px 0px 19px 0px rgba(0, 0, 0, 0.2);
-      `)
+      `
+    );
 
-    this.css(".context-menu li",
+    this.css(
+      '.context-menu li',
       `
       border-radius: 5px;
       padding: 5px 2px;
-      `)
+      `
+    );
 
-    this.css(".context-menu .context-menu-btn",
+    this.css(
+      '.context-menu .context-menu-btn',
       `
       cursor: pointer;
-      `)
+      `
+    );
 
-    this.css(".context-menu .context-menu-btn:hover",
+    this.css(
+      '.context-menu .context-menu-btn:hover',
       `
       background-color: #f0f8ff;
-      `)
+      `
+    );
   }
 
   private css(selector: string, styleString: string) {
@@ -113,42 +120,38 @@ export default class ContextMenuController {
   }
 
   private createMenu(menuData: ContextMenuData[], data: any) {
-    const menu = document.createElement("ul");
-    menu.className = "context-menu";
+    const menu = document.createElement('ul');
+    menu.className = 'context-menu';
 
+    for (let i = 0; i < menuData.length; i++) {
+      const elemData: ContextMenuData = menuData[i];
 
-      for (let i = 0; i < menuData.length; i++) {
-        const elemData: ContextMenuData = menuData[i];
+      let elem;
 
-        let elem;
+      if (elemData.type === 'hr') {
+        elem = document.createElement('hr');
+      } else {
+        elem = document.createElement('li');
+        if (elemData.type === 'button') {
+          elem.className = 'context-menu-btn';
 
-        if (elemData.type === "hr") {
-          elem = document.createElement("hr");
-        } else {
-          elem = document.createElement("li");
-          if (elemData.type === "button") {
-            elem.className = "context-menu-btn";
-
-            elem.addEventListener("click", () => {
-                this.listeners
-                  .map(e => {
-                    if (e.type === "clickButton") {
-                      e.event(elemData.name, data);
-                    }
-                  })
-
-                this.close();
+          elem.addEventListener('click', () => {
+            this.listeners.map((e) => {
+              if (e.type === 'clickButton') {
+                e.event(elemData.name, data);
               }
-            )
-          }
-          elem.textContent = String(elemData.text);
+            });
+
+            this.close();
+          });
         }
-        menu.appendChild(elem);
+        elem.textContent = String(elemData.text);
       }
+      menu.appendChild(elem);
+    }
 
     this.menuElement = menu;
     document.body.appendChild(menu);
-
 
     if (menu.clientHeight + this.cursorScreenPage.y > document.documentElement.clientHeight) {
       menu.style.maxHeight = `${this.cursorPage.y}px`;
@@ -176,7 +179,6 @@ export default class ContextMenuController {
     this.listeners.push({
       type,
       event
-    })
+    });
   }
 }
-

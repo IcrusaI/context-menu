@@ -1,3 +1,3 @@
-type EventType = "clickButton";
+type EventType = 'clickButton';
 
 export default EventType;

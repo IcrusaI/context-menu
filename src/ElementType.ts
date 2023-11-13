@@ -1,3 +1,3 @@
-type ElementType = "text" | "hr" | "button";
+type ElementType = 'text' | 'hr' | 'button';
 
 export default ElementType;
