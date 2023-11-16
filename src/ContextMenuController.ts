@@ -99,9 +99,9 @@ export default class ContextMenuController {
   /** Открытие меню
    *
    * @param menu {ContextMenuData[]} - список элементов меню, которые нужно отобразить
-   * @param data {any} - данные, которые передадутся, при вызове события
+   * @param [data] {any} - данные, которые передадутся, при вызове события
    */
-  public open(menu: ContextMenuData[] | undefined, data: any) {
+  public open(menu: ContextMenuData[] | undefined, data?: any) {
     this.close();
 
     if (menu === undefined) {
