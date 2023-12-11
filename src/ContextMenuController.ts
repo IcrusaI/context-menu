@@ -23,6 +23,10 @@ export default class ContextMenuController {
     document.head.appendChild(styleEl);
     this.stylesheet = styleEl.sheet as CSSStyleSheet;
 
+    this.addEventHandler = this.addEventHandler.bind(this);
+    this.open = this.open.bind(this);
+    this.close = this.close.bind(this);
+
     this.initDefaultCss();
   }
 
@@ -101,7 +105,7 @@ export default class ContextMenuController {
    * @param menu {ContextMenuData[]} - список элементов меню, которые нужно отобразить
    * @param [data] {any} - данные, которые передадутся, при вызове события
    */
-  public open = (menu: ContextMenuData[] | undefined, data?: any) => {
+  public open (menu: ContextMenuData[] | undefined, data?: any) {
     this.close();
 
     if (menu === undefined) {
@@ -114,7 +118,7 @@ export default class ContextMenuController {
   /** Закрытие контекстного меню
    *
    */
-  public close = () => {
+  public close () {
     this.menuElement?.parentElement?.removeChild(this.menuElement);
     this.menuElement = undefined;
   }
@@ -175,7 +179,7 @@ export default class ContextMenuController {
    * @param type {EventType} -
    * @param event
    */
-  public addEventHandler = (type: EventType, event: (name: string, data: any) => void) => {
+  public addEventHandler (type: EventType, event: (name: string, data: any) => void) {
     this.listeners.push({
       type,
       event
