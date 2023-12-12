@@ -1,6 +1,6 @@
 {
   "name": "@IcrusaI/context-menu",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "type": "module",
   "main": "./dist/context-menu.umd.cjs",
   "module": "./dist/context-menu.js",

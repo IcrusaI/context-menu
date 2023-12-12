@@ -2,9 +2,14 @@ import Point2D from './Point2D';
 import ContextMenuEventData from './ContextMenuEventData';
 import ContextMenuData from './ContextMenuData';
 import EventType from './EventType';
+import {type} from "node:os";
 
 export default class ContextMenuController {
-  private listeners: ContextMenuEventData[] = [];
+  get listeners(): ContextMenuEventData[] {
+    return this._listeners;
+  }
+
+  private _listeners: ContextMenuEventData[] = [];
   private stylesheet: CSSStyleSheet;
 
   private menuElement: Node | undefined;
@@ -21,6 +26,11 @@ export default class ContextMenuController {
     const styleEl: HTMLStyleElement = document.createElement('style');
     styleEl.appendChild(document.createTextNode(''));
     document.head.appendChild(styleEl);
+
+    if (styleEl.sheet === null) {
+      throw new Error("style is not initialized")
+    }
+
     this.stylesheet = styleEl.sheet as CSSStyleSheet;
 
     this.addEventHandler = this.addEventHandler.bind(this);
@@ -140,6 +150,7 @@ export default class ContextMenuController {
           elem.className = 'context-menu-btn';
 
           elem.addEventListener('click', () => {
+            console.log(this.listeners, this._listeners, this.listeners.length, this._listeners.length)
             this.listeners.map((e) => {
               if (e.type === 'clickButton') {
                 e.event(elemData.name, data);
@@ -180,7 +191,7 @@ export default class ContextMenuController {
    * @param event
    */
   public addEventHandler (type: EventType, event: (name: string, data: any) => void) {
-    this.listeners.push({
+    this._listeners.push({
       type,
       event
     });

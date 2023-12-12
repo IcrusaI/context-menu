@@ -23,9 +23,9 @@ container.addEventListener("contextmenu", (ev) => {
 context.addEventHandler('clickButton', (name: string, data: any) => {
     console.log(1, name, data)
 })
+
 class A {
     constructor(context: ContextMenu) {
-        console.log(context)
         context.addEventHandler('clickButton', (name: string, data: any) => {
             console.log(2, name, data)
         })
